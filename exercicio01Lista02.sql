@@ -1,6 +1,7 @@
 create database db_cidade_das_carnes;
-
 use db_cidade_das_carnes;
+
+
 
 create table tb_categoria(
 	id_categoria int auto_increment not null,
@@ -17,13 +18,12 @@ create table tb_produto(
     peso decimal,
     quantidade int,
     ativo enum ("Disponivel", "Indisponivel"),
+    id_categoria int,
     primary key (id_produto),
-    id_categoria int, 
 	constraint fk_categoria foreign key (id_categoria) references tb_categoria (id_categoria)
 );
 
-select * from tb_categoria;
-select * from tb_produto;
+
 
 insert into tb_categoria (nome_categoria, descricao)
 values ("Aves", "Aves congeladas"),
@@ -44,14 +44,28 @@ values ("1", "Asa de Frango", 12.00, "Sadia", 1, 10, "Disponivel"),
 ("5", "Pato", 35.00, "Germania", 2.3, 2, "Disponivel"),
 ("5", "Cordeiro", 50.00, "Arrais", 3.0, 1, "Disponivel");
 
+
+
+#alterando o valo de preco dos produtos
+update tb_produto 
+set  preco = 70
+where produto = "Cordeiro";
+
+update tb_produto
+set preco = 55
+where produto = "Salmao";
+
+
+
+
+
+select * from tb_categoria;
+select * from tb_produto;
 select * from tb_produto where preco > 50;
-
 select * from tb_produto where preco > 3 and preco < 60;
-
 select * from tb_produto where produto like "%co%";
 
-select tb_categoria.nome_categoria, tb_produto.produto from tb_categoria
-inner join tb_produto on tb_categoria.id_categoria = tb_produto.id_produto;
-
-select * from tb_produto where id_categoria = 1;
-
+#Unindo as duas tabelas e extraindo todos os produtos por sua respectiva categoria 
+select tb_produto.produto, tb_categoria.nome_categoria from tb_produto
+inner join tb_categoria
+on tb_produto.id_categoria = tb_categoria.id_categoria
